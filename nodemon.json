@@ -1,0 +1,11 @@
+{
+    "restartable": "rs",
+    "verbose": true,
+    "events": {
+      "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+    },
+    "exec": "ts-node ./src/server.ts",
+    "ext": "js,ts,json",
+    "delay": 500
+  }
+  
