@@ -1,3 +1,11 @@
+/**
+ * 
+ * @param {number} minCount - Minimum count
+ * @param {number} maxCount - Maximum count
+ * @param {Date} startDate - Start date
+ * @param {Date} endDate - End date
+ * @returns 
+ */
 export function getAgg(
   minCount: number,
   maxCount: number,
@@ -7,12 +15,10 @@ export function getAgg(
   return [
     {
       $project: {
-        _id: 1,
+        _id: 0,
         key: 1,
-        value: 1,
         createdAt: 1,
-        counts: 1,
-        sum: {
+        totalCount: {
           $sum: "$counts",
         },
       },
@@ -22,12 +28,12 @@ export function getAgg(
         $and: [
           {
             $expr: {
-              $gt: ["$sum", minCount],
+              $gt: ["$totalCount", minCount],
             },
           },
           {
             $expr: {
-              $lt: ["$sum", maxCount],
+              $lt: ["$totalCount", maxCount],
             },
           },
           {
@@ -38,11 +44,6 @@ export function getAgg(
           },
         ],
       },
-    },
-    {
-      $project: {
-        sum: 0,
-      },
-    },
+    }
   ];
 }

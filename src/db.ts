@@ -9,4 +9,7 @@ async function connect() {
     return client.connect();
 }
 
+/**
+ * Export client and connect function
+ */
 export { client, connect };
