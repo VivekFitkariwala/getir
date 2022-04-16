@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { client } from "./db";
+import { getClient } from "./db";
+import { getDataWithSpecificFilter } from "./service";
 import { MongoError } from "mongodb";
-import { getAgg } from "./data";
 
-const dbName = "getir-case-study";
-const db = client.db(dbName);
+const dbName = process.env.DB_NAME || global.__MONGO_DB_NAME__;
+const db = getClient().db(dbName);
 const collection = db.collection("records");
 
 const route = express.Router();
@@ -14,22 +14,21 @@ const route = express.Router();
  */
 route.post("/", async (req: Request, res: Response) => {
   const { startDate, endDate, minCount, maxCount } = req.body;
-  const agg = getAgg(
-    minCount,
-    maxCount,
-    new Date(startDate),
-    new Date(endDate)
-  );
-  const document = [];
   try {
-    for await (let doc of collection.aggregate(agg)) {
-      document.push(doc);
-    }
-    res.json({
-      code: 0,
-      msg: "success",
-      records: document,
-    });
+    const document = await getDataWithSpecificFilter(
+        minCount,
+        maxCount,
+        startDate,
+        endDate,
+        collection
+      );
+  
+      res.json({
+        code: 0,
+        msg: "success",
+        records: document,
+
+      });
   } catch (err) {
     const error = err as MongoError;
     res.statusCode = 400;

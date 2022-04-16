@@ -2,7 +2,7 @@ import 'dotenv/config'
 import "./error";
 import { Server } from "http";
 import app from "./app";
-import { client, connect } from "./db";
+import { getClient, connect } from "./db";
 
 let server: Server;
 const port = process.env.PORT;
@@ -32,6 +32,6 @@ connect()
      * Close the database connection
      * and throw error for closing the node process
      */
-    client.close();
+     getClient().close();
     throw err;
   });
