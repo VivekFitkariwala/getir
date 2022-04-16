@@ -1,14 +1,21 @@
 import app from "./app";
-import compression from "compression";
-import helmet from "helmet";
+import { client, connect } from "./db";
 
-app.use(helmet()); // set well-known security-related HTTP headers
-app.use(compression());
-
-app.disable("x-powered-by");
-
-const server = app.listen(3000, () =>
-  console.log("Starting ExpressJS server on Port 3000")
-);
+let server;
+const port = 3000;
+connect()
+  .then((client) => {
+    console.log("Monogo client connected");
+    server = app
+      .listen(port, () => console.log("Starting ExpressJS server on Port 3000"))
+      .on("error", (err) => {
+        client.close();
+        throw err;
+      });
+  })
+  .catch((err) => {
+    client.close();
+    throw err;
+  });
 
 export default server;
