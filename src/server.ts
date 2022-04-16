@@ -1,10 +1,11 @@
+import 'dotenv/config'
+import "./error";
 import { Server } from "http";
 import app from "./app";
 import { client, connect } from "./db";
-import "./error";
 
 let server: Server;
-const port = 3000;
+const port = process.env.PORT;
 
 /**
  * Connect to database
