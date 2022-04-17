@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import "dotenv/config";
 import "./error";
 import { Server } from "http";
 import app from "./app";
@@ -32,6 +32,6 @@ connect()
      * Close the database connection
      * and throw error for closing the node process
      */
-     getClient().close();
+    getClient().close();
     throw err;
   });

@@ -7,7 +7,7 @@ async function connect() {
   if (!url) {
     throw new Error("No mongo url provided");
   }
-  client == new MongoClient(url);
+  client = new MongoClient(url);
   return client.connect();
 }
 
